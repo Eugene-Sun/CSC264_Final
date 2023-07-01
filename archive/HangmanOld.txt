@@ -1,0 +1,190 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+
+/**********************************************************
+* Class Name : Hangman
+* Author : Eugene Sun
+* Date : 2023.04.04
+* Course/Section : CSC 264-301
+* Class Description: Simple hangman game played using the terminal
+*   the game picks a random word from a pre-supplied list. The player then guesses
+*   a letter that they think appears in the word. The game checks the word and either reveals
+*   all instances of the guessed letter or reduces the player's lives by 1. 
+*   The game then displays the player's progress towards guessing the word
+*
+*
+**********************************************************/
+public class Hangman {
+
+    // See: http://jbauman.com/aboutgsl.html - text file the hangman game uses to select a word
+    // for the user to guess
+    private static final String DICTIONARY_FILE = "gsl.txt";
+    // private static final String DICTIONARY_FILE = "dictionary.txt";
+    // for a ridiculously large dictionary use "dictionary.txt"
+    
+    // minimum length of a word to consider
+    private static final int MIN_WORD_LENGTH = 3;
+    
+    // largest number of misses allowed to be set
+    private static final int MAX_MISSES = 26;
+    
+    public static void main(String[] args) {
+        
+        System.out.println("Welcome to Hangman!");
+        
+        // check for debug mode
+        boolean debug = args.length > 1 && args[0].equals("debug");
+        
+        // read in the data from the dictionary to an ArrayList
+        ArrayList<String> words = new ArrayList<String>();
+        
+        // first, open the file and create a Scanner to read it in
+        Scanner wordScan = null;
+        try {
+            wordScan = new Scanner(new File(DICTIONARY_FILE));
+        }
+        catch (FileNotFoundException e) {
+            System.err.println(e);
+            System.exit(1);
+        }
+        
+        // read the contents of the file one word at a time, skipping
+        // over words that are too short for use by hangman.
+        while (wordScan.hasNext()) {
+            String nextWord = wordScan.next();
+            if (nextWord.length() >= MIN_WORD_LENGTH) {
+                words.add(nextWord);
+            }
+        }
+        
+        //if debug is enabled, 
+        if (debug) {
+            System.out.println("Dictionary contains " + words.size() + " words");
+        }
+        
+        // use random number generator to pick a word
+        Random random = new Random();
+
+        // create a Scanner to read keyboard input
+        Scanner keyboard = new Scanner(System.in);
+        
+        // find out the number of guesses allowed before a hangman
+        int missesAllowed = 7;
+        
+        boolean gameOver = false;
+        
+        while (!gameOver) {
+            
+            // pick the next word
+            // note: random.nextInt(n) returns an int between 0 and n-1
+            String theWord = words.get(random.nextInt(words.size()));
+            
+            if (debug) {
+                System.out.println("The word is... " + theWord);
+            }
+            boolean wordOver = false;
+            int missesLeft = missesAllowed;
+            ArrayList<Character> guessed = new ArrayList<Character>();
+            
+            // keep looping until the word has been guessed or too
+            // many incorrect guesses have been made
+            while (!wordOver) {
+                
+                showGuessed(theWord, guessed);
+                System.out.println("\nYou have " + missesLeft + " incorrect guesses remaining");
+                System.out.println(maskWord(theWord, guessed));
+                boolean guessOK = false;
+                String guess = null;
+                while (!guessOK) {
+                    System.out.print("Your guess? ");
+                    guess = keyboard.next().toLowerCase();
+                    // add this guess to our list of guessed letters
+                
+                    if (guessed.contains(guess.charAt(0))) {
+                        System.out.println("You already guessed that!");
+                    }
+                    else {
+                        // insert the guess into the list of guessed
+                        // letters in alphabetical order
+                        int pos = 0;
+                        while (pos < guessed.size() &&
+                               guessed.get(pos) < guess.charAt(0)) {
+                                   pos++;
+                                }
+                        guessed.add(pos, guess.charAt(0));
+                        guessOK = true;
+                    }
+                }
+                // is the first letter of the response in the word?
+                if (theWord.indexOf(guess.substring(0,1)) == -1) {
+                    // not in the word
+                    System.out.println("The letter " + guess.charAt(0) + " is not in the word.");
+                    missesLeft--;
+                    if (missesLeft == 0) {
+                        System.out.println("Game over! The word was: " + theWord);
+                        wordOver = true;
+                    }
+                }
+                else {
+                    // it is in the word
+                    System.out.println("Congrats - you guessed the whole word!.");
+                    if (theWord.equals(maskWord(theWord, guessed))) {
+                        System.out.println("You got it!  The word was: " + theWord);
+                        wordOver = true;
+                    }
+                }
+            }
+            
+            System.out.print("Play again? ");
+            String response = keyboard.next();
+            gameOver = response.equalsIgnoreCase("no");
+            
+        }
+        
+        System.out.println("Thanks for playing.");
+    }
+    
+    /**
+     * return a String with the characters not in the list of characters
+     * replaced with _ characters.
+     * 
+     * @param word the word to be masked
+     * @param letters the ArrayList of characters to be revealed
+     * @return the word with all characters not in letters replaced by _'s
+     */
+    private static String maskWord(String word, ArrayList<Character> letters) {
+        
+        String answer = "";
+        for (int i = 0; i<word.length(); i++) {
+            if (letters.contains(word.charAt(i))) {
+                answer = answer + word.charAt(i);
+            }
+            else {
+                answer = answer + "_";
+            }
+        }
+        return answer;
+    }
+    
+    /**
+     * Show the list of guessed letters that were not found in the word.
+     * 
+     * @param theWord the word being guessed
+     * @param letters the ArrayList of characters guessed so far
+     */
+    private static void showGuessed(String theWord, ArrayList<Character> letters) {
+        
+        System.out.print("Guessed: ");
+        for (int i = 0; i<letters.size(); i++) {
+            if (theWord.indexOf(letters.get(i)) == -1) {
+                System.out.print(letters.get(i) + " ");
+            }
+        }
+        System.out.println();
+    }
+ }

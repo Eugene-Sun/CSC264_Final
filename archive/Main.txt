@@ -1,0 +1,89 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**********************************************************
+ * Program Name : Main
+ * Author : Eugene Sun
+ * Date : 2023.04.05
+ * Course/Section : CSC 264-301
+ * Program Description: 
+ * 
+ * Methods:
+ * -------
+ * 
+ **********************************************************/
+public class Main
+{
+   static GameWindow window;
+   /**********************************************************
+    * Method Name : Main
+    * Author : Eugene Sun
+    * Date : 2023.04.04
+    * Course/Section : CSC 264-301
+    * Method Description: Constructor method, 
+    *
+    *
+    **********************************************************/
+   public static void main(String[] args)
+   {
+      // new GameWindow();
+      // new Hangman();
+      runTextGame();
+   }
+
+   private static void runTextGame() {
+      //create hangman entity
+      HangmanEntity he = new HangmanEntity();
+      //create hangman service
+      HangmanService hs = new HangmanService(he);
+
+      //initialize hangman entity
+      hs.initializeHE();
+
+      // int missesAllowed = 7;
+        
+      boolean gameOver = false;
+        
+      while (!gameOver) {
+         
+         // pick the next word
+         // note: random.nextInt(n) returns an int between 0 and n-1
+         String theWord = hs.getNextWord("");
+         
+         boolean wordOver = false;
+
+         // create a Scanner to read keyboard input
+         Scanner keyboard = new Scanner(System.in);
+         
+         // keep looping until the word has been guessed or too
+         // many incorrect guesses have been made
+         while (!wordOver) {
+               
+            hs.showGuessed();
+            System.out.println("\nYou have " + he.getLiveCount() + " incorrect guesses remaining");
+            System.out.println(hs.maskWord());
+            boolean guessOK = false;
+            String guess = null;
+
+            while (!guessOK) {
+               System.out.print("Your guess? ");
+               guess = keyboard.next().toLowerCase();
+               guessOK = hs.isRepeatInput(guess.charAt(0));
+            }
+
+            wordOver = hs.guess(guess.charAt(0));
+            gameOver = he.getGameOverFlag();
+         }
+         
+         System.out.print("Play again? (Y/N) ");
+         String response = keyboard.next();
+         gameOver = response.equalsIgnoreCase("N");
+
+         if (!gameOver) {
+            hs.initializeHE();
+         }
+      }
+     
+     System.out.println("Thanks for playing.");
+   }
+}

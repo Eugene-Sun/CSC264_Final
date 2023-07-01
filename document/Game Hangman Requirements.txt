@@ -1,0 +1,48 @@
+Name: Eugene Sun
+Class: CSC 264-301
+
+Game: Hangman
+Requirements:
+
+Textmode 
+1. User should be able to select the level of difficulty
+2. The game based on the difficulty selects a random word within the following range:
+2.1 Easy - 3-5 characters
+2.2 Medium - 5-7 characters
+2.3 Hard - atleast 7 characters
+3. After selecting a difficulty the game will display the following information:
+3.1 The number of tries made guessing the letters in the word
+3.2 The number of tries left to guessing the word
+3.3 The letters the user has previously inputted
+3.4 The word that the user is guessing displayed with "_" represting each letter of the word
+4. If the user inputs a repeating character the game will notify the user and prompt to make another guess
+5. If the user inputs a non-matching character:
+5.1 The game will deduct 1 try from the total tries the user has remaining and prompt the user to guess again
+5.2 If the user has no tries remaining, the game will notify user that they no more tries left as well as display the 
+    word that the user was guessing
+6. If the user inputs a matching character:
+6.1 The game will reveal all instances of the letter in the word
+6.2 If the user has successfully guessed the entire word, the game will display a congratulation message and
+exit to the main menu
+
+Guimode
+1. User should be able to select the level of difficulty
+2. The game based on the difficulty selects a random word within the following range:
+2.1 Easy - 3-5 characters
+2.2 Medium - 5-7 characters
+2.3 Hard - atleast 7 characters
+3. After selecting a difficulty the game will display the following information:
+3.1 A hangman image representing the number of tries the user has left
+3.2 The number of tries made guessing the letters in the word
+3.3 The number of tries left to guessing the word
+3.4 The letters the user has previously inputted
+3.5 The word that the user is guessing displayed with "_" represting each letter of the word
+4. If the user inputs a repeating character the game will notify the user and prompt to make another guess
+5. If the user inputs a non-matching character:
+5.1 The game will deduct 1 try from the total tries the user has remaining and prompt the user to guess again
+5.2 If the user has no tries remaining, the game will notify user that they no more tries left as well as display the 
+    word that the user was guessing
+6. If the user inputs a matching character:
+6.1 The game will reveal all instances of the letter in the word
+6.2 If the user has successfully guessed the entire word, the game will display a congratulation message 
+and prompt the user to either play a new game or quit

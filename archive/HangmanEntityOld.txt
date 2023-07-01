@@ -1,0 +1,69 @@
+import java.util.ArrayList;
+
+public class HangmanEntity {
+
+    private String word;
+    private String matchStr;
+    private String userInputStr;
+    private int liveCount;
+    private boolean gameOverFlag;
+
+    public boolean getGameOverFlag() {
+        return gameOverFlag;
+    }
+
+    public void setGameOverFlag(boolean gameOverFlag) {
+        this.gameOverFlag = gameOverFlag;
+    }
+
+    public HangmanEntity() 
+    {
+    }
+
+    public String getWord() {
+        return word;
+    }
+    public void setWord(String word) {
+        this.word = word;
+    }
+    public String getMatchStr() {
+        return matchStr;
+    }
+    public void setMatchStr(String matchStr) {
+        this.matchStr = matchStr;
+    }
+    public String getUserInputStr() {
+        return userInputStr;
+    }
+    public void setUserInputStr(String userInputStr) {
+        this.userInputStr = userInputStr;
+    }
+    public int getLiveCount() {
+        return liveCount;
+    }
+    public void setLiveCount(int liveCount) {
+        this.liveCount = liveCount;
+    }
+
+    public ArrayList<Character> getUserInputList() {
+        String userInputString = getUserInputStr();
+        ArrayList<Character> letters = new ArrayList<Character>();
+
+        if (!userInputString.isEmpty()) {
+            String[] temp = userInputString.split(",");
+            for (String letter: temp) {
+                letters.add(letter.charAt(0));
+            }
+        }
+
+        return letters;
+    }
+
+    public void appendUserInput(char input) {
+        String userInpuString = getUserInputStr();
+
+        userInpuString = userInpuString.isBlank() ? String.valueOf(input) : userInpuString + "," + String.valueOf(input);
+        
+        setUserInputStr(userInpuString);
+    }
+}

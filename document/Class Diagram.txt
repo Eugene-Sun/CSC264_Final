@@ -1,0 +1,43 @@
+Main
+GameWindow - the window component that contains the hangman game
+IntroPanel - the landing page player sees before starting hangman game
+GamePanel - the layout contain containing the hangman game
+GameOverPanel - class for displaying the game over screen
+Hangman - the actual class for running the hangman game
+
+
+Functional Breakdown:
+Main - 
+1. create GameWindow
+
+GameWindow - 
+1. constructor - 
+1.1. initialize window
+1.2. create IntroPanel class
+2. startGame -
+2.1. create GamePanel class
+3. endGame - 
+3.1. create GameOverPanel class
+
+IntroPanel - 
+1. constructor -
+2. StartListener -
+2.1. startGame
+
+GamePanel -
+1. constructor -
+1.1. create Hangman class
+2. initKeyboard -
+3. QuitListener -
+
+Hangman - 
+1. constructor -
+1.1. 
+2. maskWord -
+2.1. 
+3. showGuessed -
+3.1.
+
+GameOverPanel - 
+1. constructor -
+1.1.
